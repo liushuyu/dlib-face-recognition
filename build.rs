@@ -31,14 +31,48 @@ fn download_and_unzip(client: &reqwest::Client, url: &str) {
     std::io::copy(&mut decoded, &mut file).unwrap();
 }
 
+fn build_dlib() {
+    use cc::Build;
+    println!("{:?}", std::env::current_dir());
+    let files: &[&str] = &[
+        "dlib/dlib/base64/base64_kernel_1.cpp",
+        "dlib/dlib/bigint/bigint_kernel_1.cpp",
+        "dlib/dlib/bigint/bigint_kernel_2.cpp",
+        "dlib/dlib/bit_stream/bit_stream_kernel_1.cpp",
+        "dlib/dlib/entropy_decoder/entropy_decoder_kernel_1.cpp",
+        "dlib/dlib/entropy_decoder/entropy_decoder_kernel_2.cpp",
+        "dlib/dlib/entropy_encoder/entropy_encoder_kernel_1.cpp",
+        "dlib/dlib/entropy_encoder/entropy_encoder_kernel_2.cpp",
+        "dlib/dlib/md5/md5_kernel_1.cpp",
+        "dlib/dlib/tokenizer/tokenizer_kernel_1.cpp",
+        "dlib/dlib/unicode/unicode.cpp",
+        "dlib/dlib/test_for_odr_violations.cpp",
+    ];
+    println!("cargo:rerun-if-changed=./dlib/");
+    Build::new()
+        .files(files)
+        .define("DLIB_ISO_CPP_ONLY", None)
+        .define("DLIB_DISABLE_ASSERTS", None)
+        .define(
+            "DLIB_CHECK_FOR_VERSION_MISMATCH",
+            "DLIB_VERSION_MISMATCH_CHECK__EXPECTED_VERSION_19_20_99",
+        )
+        .compile("libdlib.a");
+}
+
 fn main() {
     let mut config = cpp_build::Config::new();
 
-    println!("cargo:rustc-link-lib=dlib");
-    println!("cargo:rustc-link-lib=lapack");
-    println!("cargo:rustc-link-lib=cblas");
-
-    config.build("src/lib.rs");
+    if cfg!(feature = "bundled-dlib") {
+        build_dlib();
+        println!("cargo:rustc-link-lib=dlib");
+        config.include("./dlib/").build("src/lib.rs");
+    } else {
+        println!("cargo:rustc-link-lib=dlib");
+        println!("cargo:rustc-link-lib=lapack");
+        println!("cargo:rustc-link-lib=cblas");
+        config.build("src/lib.rs");
+    }
 
     #[cfg(feature = "embed-any")]
     {
@@ -71,7 +105,7 @@ fn main() {
         #[cfg(feature = "embed-lp")]
         download_and_unzip(
             &client,
-            "http://dlib.net/files/shape_predictor_68_face_landmarks.dat.bz2",
+            "http://dlib.net/files/shape_predictor_5_face_landmarks.dat.bz2",
         );
     }
 }

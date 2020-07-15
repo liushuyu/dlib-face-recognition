@@ -22,7 +22,7 @@ include = [
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [features]
-default = []
+default = ["bundled-dlib"]
 
 embed-all = ["embed-fd-nn", "embed-fe-nn", "embed-lp"]
 embed-any = ["reqwest", "bzip2"]
@@ -31,14 +31,17 @@ embed-fd-nn = ["embed-any"]
 embed-fe-nn = ["embed-any"]
 embed-lp = ["embed-any"]
 
+bundled-dlib = ["cc"]
+
 [dependencies]
 cpp = "0.5"
 image = "0.23"
 
 [build-dependencies]
 cpp_build = "0.5"
-bzip2 = { version = "0.3", optional = true }
+bzip2 = { version = "0.4", optional = true }
 reqwest = { version = "0.9", optional = true }
+cc = { version = "1.0", features = ["parallel"], optional = true }
 
 [dev-dependencies]
 lazy_static = "1.4"
