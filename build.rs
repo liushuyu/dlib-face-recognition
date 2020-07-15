@@ -47,11 +47,43 @@ fn build_dlib() {
         "dlib/dlib/tokenizer/tokenizer_kernel_1.cpp",
         "dlib/dlib/unicode/unicode.cpp",
         "dlib/dlib/test_for_odr_violations.cpp",
-    ];
+        "dlib/dlib/sockets/sockets_kernel_1.cpp",
+        "dlib/dlib/bsp/bsp.cpp",
+        "dlib/dlib/dir_nav/dir_nav_kernel_1.cpp",
+        "dlib/dlib/dir_nav/dir_nav_kernel_2.cpp",
+        "dlib/dlib/dir_nav/dir_nav_extensions.cpp",
+        "dlib/dlib/linker/linker_kernel_1.cpp",
+        "dlib/dlib/logger/extra_logger_headers.cpp",
+        "dlib/dlib/logger/logger_kernel_1.cpp",
+        "dlib/dlib/logger/logger_config_file.cpp",
+        "dlib/dlib/misc_api/misc_api_kernel_1.cpp",
+        "dlib/dlib/misc_api/misc_api_kernel_2.cpp",
+        "dlib/dlib/sockets/sockets_extensions.cpp",
+        "dlib/dlib/sockets/sockets_kernel_2.cpp",
+        "dlib/dlib/sockstreambuf/sockstreambuf.cpp",
+        "dlib/dlib/sockstreambuf/sockstreambuf_unbuffered.cpp",
+        "dlib/dlib/server/server_kernel.cpp",
+        "dlib/dlib/server/server_iostream.cpp",
+        "dlib/dlib/server/server_http.cpp",
+        "dlib/dlib/threads/multithreaded_object_extension.cpp",
+        "dlib/dlib/threads/threaded_object_extension.cpp",
+        "dlib/dlib/threads/threads_kernel_1.cpp",
+        "dlib/dlib/threads/threads_kernel_2.cpp",
+        "dlib/dlib/threads/threads_kernel_shared.cpp",
+        "dlib/dlib/threads/thread_pool_extension.cpp",
+        "dlib/dlib/threads/async.cpp",
+        "dlib/dlib/timer/timer.cpp",
+        "dlib/dlib/stack_trace.cpp",
+        "dlib/dlib/cuda/cpu_dlib.cpp",
+        "dlib/dlib/cuda/tensor_tools.cpp",
+        "dlib/dlib/data_io/image_dataset_metadata.cpp",
+        "dlib/dlib/data_io/mnist.cpp",
+        "dlib/dlib/global_optimization/global_function_search.cpp",
+        "dlib/dlib/filtering/kalman_filter.cpp",
+        "dlib/dlib/svm/auto.cpp"];       
     println!("cargo:rerun-if-changed=./dlib/");
     Build::new()
         .files(files)
-        .define("DLIB_ISO_CPP_ONLY", None)
         .define("DLIB_DISABLE_ASSERTS", None)
         .define(
             "DLIB_CHECK_FOR_VERSION_MISMATCH",

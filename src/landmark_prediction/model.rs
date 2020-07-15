@@ -49,7 +49,7 @@ impl LandmarkPredictor {
 impl Default for LandmarkPredictor {
     fn default() -> Self {
         Self::new(crate::embed::path_for_file(
-            "shape_predictor_68_face_landmarks.dat",
+            "shape_predictor_5_face_landmarks.dat",
         ))
         .unwrap()
     }
