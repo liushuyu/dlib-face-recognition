@@ -92,5 +92,5 @@ fn test_point() {
         })
     };
 
-    assert_eq!(point, Point { x: 42, y: -1000 });
+    assert_eq!(point, Point([42, -1000]));
 }
